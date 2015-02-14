@@ -73,4 +73,9 @@ typedef NS_ENUM(NSUInteger, FBProfilePictureCropping) {
 - (instancetype)initWithProfileID:(NSString *)profileID
                   pictureCropping:(FBProfilePictureCropping)pictureCropping;
 
+- (void)initialize;
+- (void)refreshImage:(BOOL)forceRefresh;
+- (void)ensureImageViewContentMode;
+- (BOOL)loadedImage;
+
 @end

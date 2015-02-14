@@ -31,14 +31,13 @@
 @property (retain, nonatomic) FBURLConnection *connection;
 @property (retain, nonatomic) UIImageView *imageView;
 
-- (void)initialize;
-- (void)refreshImage:(BOOL)forceRefresh;
-- (void)ensureImageViewContentMode;
 
 @end
 
 @implementation FBProfilePictureView
-
+{
+    BOOL loadedImage;
+}
 #pragma mark - Lifecycle
 
 - (void)dealloc {
@@ -88,6 +87,11 @@
 }
 
 #pragma mark -
+
+- (BOOL)loadedImage
+{
+    return loadedImage;
+}
 
 - (NSDictionary *)_generateQueryParams {
     static CGFloat screenScaleFactor = 0.0;
@@ -164,7 +168,13 @@
 
             self.connection = nil;
             if (!error) {
-                self.imageView.image = ([UIImage imageWithData:data] ?: [self _placeholderImage]);
+                UIImage *newImage = [UIImage imageWithData:data];
+                if (newImage) {
+                    loadedImage = YES;
+                    self.imageView.image = newImage;
+                } else { 
+                    self.imageView.image = [self _placeholderImage];
+                }
                 [self ensureImageViewContentMode];
             }
         };
