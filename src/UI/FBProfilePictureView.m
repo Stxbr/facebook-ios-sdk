@@ -27,7 +27,6 @@
 @interface FBProfilePictureView ()
 
 @property (copy, nonatomic) NSDictionary *currentImageQueryParams;
-
 @property (retain, nonatomic) FBURLConnection *connection;
 @property (retain, nonatomic) UIImageView *imageView;
 
@@ -102,22 +101,18 @@
     // Retina display doesn't increase the bounds that iOS returns.  The larger size to fetch needs
     // to be calculated using the scale factor accessed above.
     int width = (int)(self.bounds.size.width * screenScaleFactor);
+    int height = (int)(self.bounds.size.height * screenScaleFactor);
 
     if (self.pictureCropping == FBProfilePictureCroppingSquare) {
         return @{
                  @"width": @(width),
                  @"height": @(width),
                  };
-    }
-
-    // For non-square images, we choose between three variants knowing that the small profile picture is
-    // 50 pixels wide, normal is 100, and large is about 200.
-    if (width <= 50) {
-        return @{ @"type": @"small" };
-    } else if (width <= 100) {
-        return @{ @"type": @"normal" };
-    } else {
-        return @{ @"type": @"large" };
+    } else {      
+        return @{
+                 @"width": @(width),
+                 @"height": @(height),
+                 };
     }
 }
 
